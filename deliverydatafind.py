@@ -1,0 +1,66 @@
+import pymysql
+from tkinter import messagebox
+from tkinter import ttk
+import tkinter
+import datetime
+from tkinter import *
+def showdelfind():
+    t=Tk()
+    t.geometry('700x700')
+    t.title("DeliverData")
+    t.configure(bg='orange')
+    def finddata():
+        db = pymysql.connect(host='localhost', user='root', password='root', database='cms')
+        cur = db.cursor()
+        xa = int(e1.get())
+        sql = "select custid, catid, cityid, dateofdelivery from deliverdata where parcelno = %d" % xa
+        cur.execute(sql)
+        data = cur.fetchone()
+        db.close()
+        if data:
+            e2.delete(0, END)
+            e3.delete(0, END)
+            e4.delete(0, END)
+            e5.delete(0, END)
+    
+            e2.insert(0, str(data[0]))
+            e3.insert(0, str(data[1]))
+            e4.insert(0, str(data[2]))
+            e5.insert(0, data[3])
+        else:
+            messagebox.showinfo("Hi", "No recordfound")
+    def close():
+        t.destroy()
+    head=Label(t,text='DELIVER DATA',bg='orange',fg='cyan',font=('segoe UI',18,'bold'))
+    head.place(x=280,y=10)
+    a=Label(t,text='Parcelno',bg='orange',font=('segoe UI',12,'bold'))
+    a.place(x=50,y=100)
+    e1=ttk.Combobox(t,width=27)
+    e1['values']=list(range(301,331))
+    e1.place(x=300,y=100)
+    b=Label(t,text='Custid',bg='orange',font=('segoe UI',12,'bold'))
+    b.place(x=50,y=150)
+    e2=ttk.Combobox(t,width=27)
+    e2['values']=list(range(101,131))
+    e2.place(x=300,y=150)
+    d=Label(t,text='Catid',bg='orange',font=('segoe UI',12,'bold'))
+    d.place(x=50,y=200)
+    e3=ttk.Combobox(t,width=27)
+    e3['values']=list(range(501,531))
+    e3.place(x=300,y=200)
+    f=Label(t,text='Cityid',bg='orange',font=('segoe UI',12,'bold'))
+    f.place(x=50,y=250)
+    e4=ttk.Combobox(t,width=27)
+    e4['values']=list(range(701,731))
+    e4.place(x=300,y=250)
+    g=Label(t,text='Date of Delivery',bg='orange',font=('segoe UI',12,'bold'))
+    g.place(x=50,y=250)
+    e5=Entry(t,width=30)
+    e5.place(x=300,y=250)
+    today=datetime.date.today()
+    e5.insert(0,str(today))
+    btn1=Button(t,text='Find',command=finddata,bg='#1565c0',fg='white',font=('calibri',11,'bold'),width=10,height=1)
+    btn1.place(x=200,y=320)
+    btn2=Button(t,text='Close',command=close,bg='#e53935',fg='white',font=('calibri',11,'bold'),width=10,height=1)
+    btn2.place(x=300,y=320)
+    t.mainloop()

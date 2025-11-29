@@ -1,0 +1,60 @@
+import pymysql
+from tkinter import *
+from tkinter import messagebox
+from tkinter import ttk
+def showcofffind():
+    t=Tk()
+    t.geometry('700x700')
+    t.title("Coffice - Find by Office ID")
+    t.configure(bg='yellow')
+    def finddata():
+        db = pymysql.connect(host='localhost', user='root', password='root', database='cms')
+        cur = db.cursor()
+        xa = int(e1.get())
+        sql = "select city_name, address, email, reg_no from coffice where officeid=%d" % xa
+        cur.execute(sql)
+        data = cur.fetchone()
+        if data:
+            e2.delete(0, END)
+            e3.delete(0, END)
+            e4.delete(0, END)
+            e5.delete(0, END)
+    
+            e2.insert(0, data[0]) 
+            e3.insert(0, data[1])
+            e4.insert(0, data[2]) 
+            e5.insert(0, str(data[3]))
+        else:
+            messagebox.showinfo("Not Found", "Record not found")
+        db.close()
+    def close():
+        t.destroy()
+    head=Label(t,text='CITY DATA',bg='yellow',fg='green',font=('segoe UI',18,'bold'))
+    head.place(x=280,y=10)
+    a=Label(t, text='officeid', bg='yellow',font=('segoe UI',12,'bold'))
+    a.place(x=80, y=100)
+    e1=ttk.Combobox(t,width=27)
+    e1['values']=list(range(1001,1021))
+    e1.place(x=300,y=100)
+    b=Label(t, text='city_name', bg='yellow',font=('segoe UI',12,'bold'))
+    b.place(x=80, y=150)
+    e2=Entry(t, width=30)
+    e2.place(x=300, y=150)
+    c=Label(t, text='address', bg='yellow',font=('segoe UI',12,'bold'))
+    c.place(x=80, y=200)
+    e3=Entry(t, width=30)
+    e3.place(x=300, y=200)
+    d=Label(t, text='email', bg='yellow',font=('segoe UI',12,'bold'))
+    d.place(x=80, y=250)
+    e4=Entry(t, width=30)
+    e4.place(x=300, y=250)
+    e=Label(t, text='reg_no', bg='yellow',font=('segoe UI',12,'bold'))
+    e.place(x=80, y=300)
+    e5=ttk.Combobox(t,width=27)
+    e5['values']=list(range(2001,2021))
+    e5.place(x=300,y=300)
+    btn1=Button(t, text='Find', command=finddata,bg='#1565c0',fg='white',font=('calibri',11,'bold'),width=10,height=1)
+    btn1.place(x=100, y=380)
+    btn2=Button(t,text='Close',command=close,bg='#e53935',fg='white',font=('calibri',11,'bold'),width=10,height=1)
+    btn2.place(x=230,y=380)
+    t.mainloop()

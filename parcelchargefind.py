@@ -1,0 +1,47 @@
+import pymysql
+from tkinter import messagebox
+import tkinter
+from tkinter import*
+from tkinter import ttk
+def showparfind():
+    t=Tk()
+    t.geometry('700x700')
+    t.title("ParcelCharge")
+    t.configure(bg='crimson')
+    def finddata():
+        db=pymysql.connect(host='localhost',user='root',password='root',database='cms')
+        cur=db.cursor()
+        xa=int(c1.get())
+        sql="select subcategory, mincharge, distancecharges from parcelcharge where catid=%d"%(xa)
+        cur.execute(sql)
+        data=cur.fetchone()
+        e2.insert(0,data[0])
+        e3.insert(0,str(data[1]))
+        e4.insert(0,str(data[2]))
+        db.close()
+    def close():
+        t.destroy()
+    head=Label(t,text='PARCELCATEGORY',bg='yellow',fg='black',font=('segoe UI',18,'bold'))
+    head.place(x=280,y=10)
+    a=Label(t,text='catid',bg='crimson',font=('segoe UI',18,'bold'))
+    a.place(x=100,y=100)
+    c1=ttk.Combobox(t,width=27)
+    c1['values']=list(range(501,521))
+    c1.place(x=300,y=100)
+    b=Label(t,text='subcategory',bg='crimson',font=('segoe UI',18,'bold'))
+    b.place(x=100,y=150)
+    e2=Entry(t,width=30)
+    e2.place(x=300,y=160)
+    c=Label(t,text='mincharges',bg='crimson',font=('segoe UI',18,'bold'))
+    c.place(x=100,y=200)
+    e3=Entry(t,width=30)
+    e3.place(x=300,y=210)
+    d=Label(t,text='distancecharges',bg='crimson',font=('segoe UI',18,'bold'))
+    d.place(x=100,y=250)
+    e4=Entry(t,width=30)
+    e4.place(x=300,y=260)
+    btn=Button(t,text='Find',command=finddata,bg='#1565c0',fg='white',font=('calibri',11,'bold'),width=10,height=1)
+    btn.place(x=200,y=350)
+    btn2=Button(t,text='Close',command=close,bg='#e53935',fg='white',font=('calibri',11,'bold'),width=10,height=1)
+    btn2.place(x=300,y=350)
+    t.mainloop()

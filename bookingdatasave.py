@@ -1,0 +1,68 @@
+import pymysql
+from tkinter import messagebox
+from tkinter import ttk
+import datetime
+import tkinter
+from tkinter import*
+def showbookinsert():
+    t=tkinter.Tk()
+    t.geometry('700x700')
+    t.title("BookingData")
+    t.configure(bg='#93C572')
+    def savedata():
+        if len(e1.get())==0 or len(e2.get())==0 or len(e3.get())==0 or len(e4.get())==0 or len(e5.get())==0:
+            messagebox.showinfo('Hi','please fill all data')
+        else:
+            db=pymysql.connect(host='localhost',user='root',password='root',database='cms')
+            cur=db.cursor()
+            xa=int(e1.get())
+            xb=e2.get()
+            xc=e3.get()
+            xd=e4.get()
+            xe=e5.get()
+            sql="insert into bookingdataa values('%s','%s','%s','%s','%s')"%(xa,xb,xc,xd,xe)
+            cur.execute(sql)
+            db.commit()
+            messagebox.showinfo("Hi",'saved')
+            e1.delete(0,100)
+            e2.delete(0,100)
+            e3.delete(0,100)
+            e4.delete(0,100)
+            e5.delete(0,100)
+            db.close()
+    def close():
+        t.destroy()
+    head=Label(t,text='BOOKING DATA',bg='#f2ede7',font=('segoe UI',18,'bold'))
+    head.place(x=280,y=10)
+    a=Label(t,text='customerid',bg='#f2ede7',font=('segoe UI',12,'bold'))
+    a.place(x=80,y=100)
+    e1=ttk.Combobox(t,width=27)
+    e1['values']=list(range(101,121))
+    e1.place(x=300,y=100)
+    b=Label(t,text='parcelno',bg='#f2ede7',font=('segoe UI',12,'bold'))
+    b.place(x=80,y=150)
+    e2=ttk.Combobox(t,width=27)
+    e2['values']=list(range(301,321))
+    e2.place(x=300,y=150)
+    d=Label(t,text='catid',bg='#f2ede7',font=('segoe UI',12,'bold'))
+    d.place(x=80,y=200)
+    e3=ttk.Combobox(t,width=27)
+    e3['values']=list(range(501,521))
+    e3.place(x=300,y=200)
+    f=Label(t,text='cityid',bg='#f2ede7',font=('segoe UI',12,'bold'))
+    f.place(x=80,y=250)
+    e4=ttk.Combobox(t,width=27)
+    e4['values']=list(range(701,721))
+    e4.place(x=300,y=250)
+    g=Label(t,text='dateofbooking',bg='#f2ede7',font=('segoe UI',12,'bold'))
+    g.place(x=80,y=300)
+    e5=Entry(t,width=20)
+    e5.place(x=300,y=300)
+    today=datetime.date.today()
+    e5.insert(0,str(today))
+    btn1=Button(t,text='Save',command=savedata,bg='#2e7d32',fg='#ffffff',font=('calibri',11,'bold'),width=10,height=1)
+    btn1.place(x=100,y=400)
+    btn2=Button(t,text='Close',command=close,bg='#e53935',fg='white',font=('calibri',11,'bold'),width=10,height=1)
+    btn2.place(x=230,y=400)
+    
+    t.mainloop()

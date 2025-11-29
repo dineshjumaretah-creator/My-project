@@ -1,0 +1,57 @@
+import pymysql
+from tkinter import messagebox
+from tkinter import ttk
+import tkinter
+from tkinter import*
+def showcityinsert():
+    t=tkinter.Tk()
+    t.geometry('700x700')
+    t.title("CityData")
+    t.configure(bg='grey')
+    def citydata():
+        if len(e1.get())==0 or len(e2.get())==0 or len(e3.get())==0 or len(e4.get())==0:
+            messagebox.showinfo('Hi','please fill all data')
+        else:
+            db=pymysql.connect(host='localhost',user='root',password='root',database='cms')
+            cur=db.cursor()
+            xa=int(e1.get())
+            xb=e2.get()
+            xc=e3.get()
+            xd=e4.get()
+            sql="insert into citydata values('%s','%s','%s','%s')"%(xa,xb,xc,xd)
+            cur.execute(sql)
+            db.commit()
+            messagebox.showinfo("Hi",'saved')
+            e1.delete(0,100)
+            e2.delete(0,100)
+            e3.delete(0,100)
+            e4.delete(0,100)
+            db.close()
+    def close():
+        t.destroy()
+    head=Label(t,text='CITY DATA',bg='#f2ede7',font=('segoe UI',18,'bold'))
+    head.place(x=280,y=10)
+    a=Label(t,text='cityid',bg='#f2ede7',font=('segoe UI',12,'bold'))
+    a.place(x=80,y=100)
+    e1=ttk.Combobox(t,width=27)
+    e1['values']=list(range(201,221))
+    e1.place(x=300,y=100)
+    b=Label(t,text='cityname',bg='#f2ede7',font=('segoe UI',12,'bold'))
+    b.place(x=80,y=150)
+    e2=ttk.Combobox(t,width=27)
+    e2['values']=('Agra','Delhi','Noida','Mumbai','Chennai','Jaipur','Mathura')
+    e2.place(x=300,y=150)
+    d=Label(t,text='state',bg='#f2ede7',font=('segoe UI',12,'bold'))
+    d.place(x=80,y=200)
+    e3=ttk.Combobox(t,width=27)
+    e3['values']=('Arunachal Pradesh','Himmachal Pradesh','Uttar Pradesh','UttraKhand','Maharastra','WestBengal','Gujarat')
+    e3.place(x=300,y=200)
+    f=Label(t,text='pincode',bg='#f2ede7',font=('segoe UI',12,'bold'))
+    f.place(x=80,y=250)
+    e4=Entry(t,width=30)
+    e4.place(x=300,y=250)
+    btn1=Button(t,text='Save',command=citydata,bg='#2e7d32',fg='#ffffff',font=('calibri',11,'bold'),width=10,height=1)
+    btn1.place(x=100,y=380)
+    btn2=Button(t,text='Close',command=close,bg='#e53935',fg='white',font=('calibri',11,'bold'),width=10,height=1)
+    btn2.place(x=230,y=380)
+    t.mainloop()
